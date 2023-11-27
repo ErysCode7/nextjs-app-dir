@@ -1,17 +1,22 @@
+import CardComponent from "@/components/card";
+import { USERS } from "@/data/data";
 import { redirect } from "next/navigation";
 
 type Props = {};
 
 const UsersPage = (props: Props) => {
-  const isAuthenticated = false;
+  const isAuthenticated = true;
 
   if (!isAuthenticated) {
     redirect("/");
   }
 
   return (
-    <div className="page-container">
-      <h1>Users Page</h1>
+    <div className="py-10 flex flex-wrap items-center justify-between gap-3 gap-y-10 px-20">
+      {USERS?.length > 0 &&
+        USERS?.map((user) => {
+          return <CardComponent key={user.id} {...user} />;
+        })}
     </div>
   );
 };
