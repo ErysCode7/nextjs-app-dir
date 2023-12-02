@@ -1,22 +1,25 @@
-import CardComponent from "@/components/card";
-import { USERS } from "@/data/data";
-import { redirect } from "next/navigation";
+import Users from "@/components/users";
+import { QUERY_KEYS } from "@/lib/tanstack-query/query-keys";
+import { getAllUsers } from "@/services/users";
+import {
+  HydrationBoundary,
+  QueryClient,
+  dehydrate,
+} from "@tanstack/react-query";
 
-type Props = {};
+const UsersPage = async () => {
+  const queryClient = new QueryClient();
 
-const UsersPage = (props: Props) => {
-  const isAuthenticated = true;
-
-  if (!isAuthenticated) {
-    redirect("/");
-  }
+  await queryClient.prefetchQuery({
+    queryKey: [QUERY_KEYS.GET_USERS],
+    queryFn: () => getAllUsers(),
+  });
 
   return (
     <div className="py-10 flex flex-wrap items-center justify-between gap-3 gap-y-10 px-20">
-      {USERS?.length > 0 &&
-        USERS?.map((user) => {
-          return <CardComponent key={user.id} {...user} />;
-        })}
+      <HydrationBoundary state={dehydrate(queryClient)}>
+        <Users />
+      </HydrationBoundary>
     </div>
   );
 };
