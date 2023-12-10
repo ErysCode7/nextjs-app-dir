@@ -19,10 +19,7 @@ export default function Error({
       <h2 className="text-3xl">Something went wrong!</h2>
       <button
         className="bg-blue-500 p-2 text-white rounded"
-        onClick={
-          // Attempt to recover by trying to re-render the segment
-          () => reset()
-        }
+        onClick={() => reset()}
       >
         Try again
       </button>

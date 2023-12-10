@@ -1,6 +1,7 @@
 "use client";
 
 import { useGetUsers } from "@/lib/tanstack-query/users/queries";
+import UserListItem from "./user-list-item";
 
 const Users = () => {
   const { data: users, isLoading: isLoadingUsers } = useGetUsers();
@@ -8,25 +9,18 @@ const Users = () => {
   if (isLoadingUsers) {
     return (
       <div className="page-container">
-        <h1 className="text-4xl">Loading...</h1>
+        <h1 className="text-4xl">Loadings...</h1>
       </div>
     );
   }
 
-  console.log({ users });
-
   return (
-    <div>
-      {users &&
-        users?.length > 0 &&
-        users?.map((user) => {
-          return (
-            <div key={user?.id}>
-              <h3>{user.name}</h3>
-            </div>
-          );
-        })}
-    </div>
+    users &&
+    users?.length > 0 &&
+    users?.map((user) => {
+      const { name, id } = user;
+      return <UserListItem key={id} name={name} id={id} />;
+    })
   );
 };
 
